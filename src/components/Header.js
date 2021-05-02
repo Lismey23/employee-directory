@@ -3,8 +3,8 @@ import React from 'react';
 function Header() {
     return(
 
-        <div class="card text-center">
-            <div class="card-header">
+        <div className="card text-center">
+            <div className="card-header">
             Employee Directory
         </div>
         </div>

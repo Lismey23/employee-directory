@@ -2,12 +2,13 @@ import React from 'react';
 
 function Card (props) {
     return (
-        <div className='row'>
-            <div className='col-sm-7 px-3'>
-                <div className='card-block px-6'>
-                    {props.children}
-                </div>
-           </div>
+        <div className="card">
+            <div><img alt={props.last} src={props.image}></img></div>
+            <div>{props.title} {props.first} {props.last} </div>
+            <div>{props.gender}</div>
+            <div>{props.age}</div>
+            <div>{props.phone}</div>
+            <div>{props.email}</div>
         </div>
     );
 }
