@@ -1,84 +1,72 @@
-import React from 'react';
-import Card from './Card'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import EmployeeTable from './EmployeeTable'
 
-class EmployeeContainer extends React.Component {
+function EmployeeContainer () {
+    const [users, setUser] = useState ([])
+    const [search, setSearch] = useState("")
 
-    state = {
-        alphabetical:true,
-        ascending:true,
-        sortedEmployees: [],
-        employees: []
+    useEffect (() => {
+        getRandomUser()
+    }, [])
+
+    async function getRandomUser() {
+        const result = await axios.get('https://randomuser.me/api/?results=25')
+        setUser(result.data.results)
+        
     }
 
-    componentDidMount() {
-        if (this.state.sortedEmployees.length < 1) {
-            this.setState({
-                sortedEmployees: this.props.empList
-            })
-        }
+    function getSearchResults(){
+        const searchedUser = users.filter(user => search.indexOf(user.name.first)> -1 || search.indexOf(user.last)> -1)
+        setUser(searchedUser)
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.empList !== prevProps.empList){
-            this.setState({sortedEmployees: this.props.empList})
-        }
+    function clearSearch(){
+        setSearch('')
+        getRandomUser()
     }
 
-    sortName = () =>{
-        let sortEmployees = [];
-        if(this.state.alphabetical){
-            sortEmployees = this.props.empList.srot((a, b) => {
-                var nameA = a.name.last.toLowerCase(), nameB = b.name.last.toLowerCase();
-
-                if(nameA < nameB) 
-                    return -1
-                
-                if (nameA < nameB)
-                    return 1
-                return 0
-
-            })
-        }
-        this.setState({
-            alphabetical: !this.state.alphabetical,
-            sortedEmployees: sortEmployees
-        })
+    function handleInputChange(event){
+        setSearch(event.target.value)
+        console.log(event.target.value)
     }
 
-    render() {
-        return(
+    function handleFormSubmit(event){
+        event.preventDefault()
+        getSearchResults()
+    }
 
-            <div>
-            <div className="header">
-                <div>Photo</div>
-                <div><p onClick={this.sortName} className="name">Name</p> </div>
-                <div>Gender</div>
-                <div>Phone</div>
-                <div>E-mail</div>
-            </div>
-
-            {
-                this.state.sortedEmployees.length > 0 && 
-                this.state.sortedEmployees.map((item, index) => (
-                    < Card
-                    image={item.picture.large}
-                    first={item.name.first}
-                    last = {item.name.last} 
-                    title={item.name.title}
-                    gender={item.gender}
-                    age={item.dob.age}
-                    phone={item.cell}
-                    email={item.email}
-                    />
-                ))
+    function sortNumber(){
+        console.log('SORTING!!!!')
+        const sorted = users.sort( function(item1, item2){
+            if(item1.phone < item2.phone){
+                return -1
             }
-
-            </div>
-
-
-
-        );
+            if (item1.phone > item2.phone){
+                return 1
+            }
+            return 0
+        })
+        console.log('Sorted List: ', sorted)
+        setUser([...sorted])
     }
+
+    return(
+
+        <div className="container" style={{marginTop: "20px", marginBottom: "20px"}}>
+        {/* search function */}
+        <div className="input-group mb-3 float-center">
+            <input value={search} onChange={handleInputChange} type="text" className="form-control" placeholder="Search Employee by Name" aria-label="Recipient's username" aria-describedby="button-addon2"/>
+            <button className="btn btn-outline-danger" onClick={clearSearch}><i class="fas fa-window-close"></i></button>
+            <button onClick={handleFormSubmit} className="btn btn-outline-primary" type="submit" id="button-addon2">Search</button>
+        </div>
+        <div style={{display: "flex", justifyContent: "center",  margin: "auto", color: "gray"}}>
+            <p><small>Hover over the Phone Number or Email to Sort Employees</small></p>
+        </div>
+        <EmployeeTable list={users} sortNumber={sortNumber}/>
+    </div>
+
+    )
 }
 
-export default EmployeeContainer
+export default EmployeeContainer;

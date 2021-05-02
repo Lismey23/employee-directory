@@ -1,33 +1,55 @@
-import React from "react";
-import EmployeeContainer from "./components/EmployeeContainer";
+import React, {Component} from "react";
+import axios from 'axios';
 import Header from './components/Header'
-import axios from 'axios'
+
+import EmployeeContainer from "./components/EmployeeContainer";
 
 
-
-
-class App extends React.Component {
+class App extends Component {
 
   state = {
-    employees: []
+    user: [],
+    loading: false
   };
 
   componentDidMount() {
-    axios.get(`https://randomuser.me/api/?results=20&nat=Aus`)
+    axios.get(`https://randomuser.me/api/`)
     .then(res => {
-      this.setState({ employees:res.data.results
+      this.setState({ 
+        user:res.data.results,
+        loading:true
       })
     });
   }
   render(){
-    return (
-      <div className="App">
-        <Header/>
-        
-      </div>
 
-    )
-  }
+    var {user, loading} = this.state
+
+    if(!loading){
+      return(
+        <div>Loading....</div>
+      )
+    }
+    else{
+      return (
+
+        <div className="container App">
+        
+          <Header />
+          <EmployeeContainer />
+         
+          
+        
+        
+       
+
+        </div>
+        
+      )
+    }
+    
+}
 }
 
 export default App;
+
