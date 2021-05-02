@@ -1,4 +1,5 @@
 import React from 'react'
+import './employeeTable.css'
 
 function Table(props) {
     return(
