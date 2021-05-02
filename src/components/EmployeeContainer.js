@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import EmployeeTable from './EmployeeTable'
+import './header.css'
 
 function EmployeeContainer () {
     const [users, setUser] = useState ([])

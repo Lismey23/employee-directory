@@ -8,7 +8,7 @@ import EmployeeContainer from "./components/EmployeeContainer";
 class App extends Component {
 
   state = {
-    user: [],
+    
     loading: false
   };
 
@@ -23,7 +23,7 @@ class App extends Component {
   }
   render(){
 
-    var {user, loading} = this.state
+    var {loading} = this.state
 
     if(!loading){
       return(
