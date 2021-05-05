@@ -40,3 +40,6 @@ GitHub profile: Lismey23
 ## Example of Search function
  <img src='./public/assets/searchExample.png'>
 
+## Deployed Application
+
+<a href="https://lismey23.github.io/employee-directory/">Click to see deployed application</a>
